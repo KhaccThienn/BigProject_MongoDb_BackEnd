@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt')
 const fs = require('fs');
 const User = require('../models/User')
+const Book = require('../models/Book');
+const { default: mongoose } = require('mongoose');
 
 const usersController = {
     getAll: async (req, res) => {
@@ -13,8 +15,15 @@ const usersController = {
         }
     },
     getOne: async (req, res) => {
+        const userId = req.params.id;
         try {
-            const user = await User.findById(req.params.id).select("-password")
+            const user = await User.findById(userId).select("-password").populate({
+                path: "wishList",
+                populate: {
+                    path: "category", // Assuming 'category' is the field that holds the category reference
+                    model: "Category" // Assuming 'Category' is the model name for categories
+                }
+            });
             if (!user) throw new Error("No such user")
             return res.status(200).json(user)
         } catch (error) {

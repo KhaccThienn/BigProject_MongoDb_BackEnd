@@ -2,6 +2,7 @@ const UserController = require('../controllers/UserController');
 const CategoryController = require('../controllers/CategoryController');
 const BookController = require('../controllers/BookController');
 const AuthController = require('../controllers/AuthController');
+const WishlistController = require('../controllers/WishlistController');
 
 const verifyToken = require("../middlewares/verifyToken")
 const upload = require('../configs/FileUpload');
@@ -37,6 +38,9 @@ const api_routes = (app) => {
     app.put('/api/book/:id', upload.single('image'), BookController.update);
     app.delete('/api/book/:id', BookController.deleted);
 
+    // Wishlist routes
+    app.post('/api/wishlist', WishlistController.addToWishlist);
+    app.post('/api/wishlist/remove', WishlistController.removeFromWishlist);
 };
 
 module.exports = api_routes;
