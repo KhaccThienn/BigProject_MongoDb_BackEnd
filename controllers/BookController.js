@@ -4,7 +4,7 @@ const fs = require('fs');
 const bookController = {
     getAll: async (req, res) => {
         try {
-            const data = await Book.find({}).populate("category")
+            const data = await Book.find({}).populate("category").sort({ updatedAt: -1 });
             return res.status(200).json(data)
         } catch (error) {
             console.log(error)
@@ -13,7 +13,7 @@ const bookController = {
     },
     getAllByLimit: async (req, res) => {
         try {
-            const data = await Book.find({}).populate("category").sort({ updatedAt: -1 }).limit(4);
+            const data = await Book.find({}).populate("category").sort({ updatedAt: -1 }).limit(8);
             return res.status(200).json(data);
         } catch (error) {
             console.log(error)
